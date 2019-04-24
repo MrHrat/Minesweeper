@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI", "UI\UI.csproj", "{5B73
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Core\Core.csproj", "{E164C5C6-FB73-45AA-9354-4F9105FCF32F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algorithm", "..\Algorithm\Algorithm.csproj", "{51950C70-5EB6-48BB-BE3A-83297DF2B96C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E164C5C6-FB73-45AA-9354-4F9105FCF32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E164C5C6-FB73-45AA-9354-4F9105FCF32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E164C5C6-FB73-45AA-9354-4F9105FCF32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51950C70-5EB6-48BB-BE3A-83297DF2B96C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51950C70-5EB6-48BB-BE3A-83297DF2B96C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51950C70-5EB6-48BB-BE3A-83297DF2B96C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51950C70-5EB6-48BB-BE3A-83297DF2B96C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
