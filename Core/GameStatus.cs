@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core
 {
-    enum GameStatus
+    public enum GameStatus
     {
         Play,
         Victory,
