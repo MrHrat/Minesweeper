@@ -40,7 +40,7 @@ namespace Core
             {
                 if (!Mines.IsPresent(field))
                 {
-                    AddCelltoUsers(field);
+                    AddVisibleСell(field);
                 }
                 else
                 {
@@ -49,7 +49,7 @@ namespace Core
             }
         }
 
-        private void AddCelltoUsers(Cell field)
+        private void AddVisibleСell(Cell field)
         {
             var AroundCells = VisibleСells.GetAroundCellsNoTags(field, _sizeField);
             var countMine = 0;
@@ -68,7 +68,7 @@ namespace Core
                 
                 foreach (Cell acell in AroundCells)
                 {
-                    AddCelltoUsers(acell);
+                    AddVisibleСell(acell);
                 }
             }
             else
