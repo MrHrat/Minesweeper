@@ -41,6 +41,11 @@ namespace Core
                 if (!Mines.IsPresent(field))
                 {
                     AddVisibleСell(field);
+
+                    if (VisibleСells.IsCompleted(_sizeField * _sizeField, _countMines))
+                    {
+                        Status = GameStatus.Victory;
+                    }
                 }
                 else
                 {

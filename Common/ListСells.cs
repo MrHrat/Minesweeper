@@ -84,5 +84,10 @@ namespace Core
         {
             return Cells[Cells.IndexOf(new Cell(row, column))];
         }
+
+        public bool IsCompleted(int countField, int countMines)
+        {
+            return Cells.Count == countField - countMines;
+        }
     }
 }
