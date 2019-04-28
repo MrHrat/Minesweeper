@@ -91,10 +91,10 @@ namespace Core
                     }
                     else
                     {
-                        switch(VisibleСells.GetSellsToRC(row, column).Status)
+                        switch(VisibleСells.GetCellsToRC(row, column).Status)
                         {
                             case CellStatus.Number:
-                                screen += VisibleСells.GetSellsToRC(row, column).Value + " ";
+                                screen += VisibleСells.GetCellsToRC(row, column).Value + " ";
                                 break;
                             case CellStatus.Open:
                                 screen += "_" + " ";
