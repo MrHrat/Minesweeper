@@ -56,7 +56,7 @@ namespace Core
             return str;
         }
 
-        private Cell RandomCell(int maxValue)
+        public static Cell RandomCell(int maxValue)
         {
             Random rand = new Random();
 
