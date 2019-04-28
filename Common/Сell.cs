@@ -55,5 +55,15 @@ namespace Common
             
             return Row == item.Row && Column == item.Column;
         }
+
+        public static Cell Random(int maxValue)
+        {
+            Random rand = new Random();
+
+            var row = rand.Next(maxValue) + 1;
+            var column = rand.Next(maxValue) + 1;
+
+            return new Cell(row, column);
+        }
     }
 }

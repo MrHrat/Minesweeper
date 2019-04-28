@@ -22,7 +22,7 @@ namespace Core
         {
             while (Cells.Count < count)
             {
-                var newCell = RandomCell(maxValue);
+                var newCell = Cell.Random(maxValue);
 
                 if (!IsPresent(newCell))
                 {
@@ -56,16 +56,6 @@ namespace Core
             return str;
         }
 
-        public static Cell RandomCell(int maxValue)
-        {
-            Random rand = new Random();
-
-            var row = rand.Next(maxValue) + 1;
-            var column = rand.Next(maxValue) + 1;
-
-            return new Cell(row, column);
-        }
-
         public List<Cell> GetAroundCellsNoTags(Cell field, int maxValue)
         {
             var AroundCells = new List<Cell>();
@@ -90,7 +80,7 @@ namespace Core
             return AroundCells;
         }
 
-        public Cell GetSellsToRC(int row, int column)
+        public Cell GetCellsToRC(int row, int column)
         {
             return Cells[Cells.IndexOf(new Cell(row, column))];
         }
