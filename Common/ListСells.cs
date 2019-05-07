@@ -45,12 +45,15 @@ namespace Common
             }
         }
 
-        public void AddListCells(ListСell cells)
+        public void AddListCells(params ListСell[] cells)
         {
-            foreach(Cell field in cells)
+            foreach (ListСell cellsList in cells)
             {
-                Add(field);
-            }
+                foreach (Cell field in cellsList)
+                {
+                    Add(field);
+                }
+            }            
         }
 
         public void AddClick(Cell cell)
