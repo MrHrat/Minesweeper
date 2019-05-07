@@ -7,8 +7,18 @@ namespace Core
 {
     public class GameField
     {
-        private int _countMines = 10;
-        private int _sizeField = 10;
+        public int CountMines
+        {
+            get;
+            private set;
+        } = 10;
+
+        public int SizeField
+        {
+            get;
+            private set;
+        } = 10;
+
         public GameStatus Status
         {
             get;
@@ -16,6 +26,12 @@ namespace Core
         } = GameStatus.Play;
 
         public ListСell VisibleСells
+        {
+            get;
+            private set;
+        } = new ListСell();
+
+        public ListСell MarkСells
         {
             get;
             private set;
@@ -29,23 +45,33 @@ namespace Core
 
         public GameField() { }
 
+        public GameField(int sizeField, int countMines)
+        {
+            SizeField = sizeField;
+            CountMines = countMines;
+        }
+
         public void GenerateMines()
         {
-            Mines.Generate(_countMines, _sizeField);
+            Mines.Generate(CountMines, SizeField);
         }
 
         public void OpenCell(Cell field)
         {
             if(Status == GameStatus.Play)
             {
-                if (!Mines.IsPresent(field))
+                if (field.Status == CellStatus.Mark)
+                {
+                    MarkСells.AddClick(field);
+                }
+                else if (!Mines.IsPresent(field))
                 {
                     AddVisibleСell(field);
 
-                    if (VisibleСells.IsCompleted(_sizeField * _sizeField, _countMines))
+                    if (VisibleСells.IsCompleted(SizeField * SizeField, CountMines))
                     {
                         Status = GameStatus.Victory;
-                    }
+                    }                    
                 }
                 else
                 {
@@ -56,21 +82,13 @@ namespace Core
 
         private void AddVisibleСell(Cell field)
         {
-            var AroundCells = VisibleСells.GetAroundCellsNoTags(field, _sizeField);
-            var countMine = 0;
-
-            foreach (Cell acell in AroundCells)
-            {
-                if (Mines.IsPresent(acell))
-                {
-                    countMine++;
-                }
-            }
+            var countMine = CountMineAroundCell(field);
 
             if (countMine == 0)
             {
                 VisibleСells.Add(new Cell(field.Row, field.Column));
                 
+                var AroundCells = VisibleСells.GetAroundCellsNoTags(field, SizeField);
                 foreach (Cell acell in AroundCells)
                 {
                     AddVisibleСell(acell);
@@ -82,24 +100,47 @@ namespace Core
             }
         }
 
+        private int CountMineAroundCell(Cell field)
+        {
+            var AroundCells = VisibleСells.GetAroundCellsNoTags(field, SizeField);
+            var countMine = 0;
+
+            foreach (Cell acell in AroundCells)
+            {
+                if (Mines.IsPresent(acell))
+                {
+                    countMine++;
+                }
+            }
+
+            return countMine;
+        }
+
         public override string ToString()
         {
             var screen = "";
 
-            for (var row = 1; row < _sizeField + 1; row++)
+            for (var row = 1; row < SizeField + 1; row++)
             {
-                for (var column = 1; column < _sizeField + 1; column++)
+                for (var column = 1; column < SizeField + 1; column++)
                 {
                     if (!VisibleСells.IsPresent(new Cell(row, column)))
                     {
-                        screen += "O" + " ";
+                        if (MarkСells.IsPresent(new Cell(row, column)))
+                        {
+                            screen += "F" + " ";                            
+                        }
+                        else
+                        {
+                            screen += "O" + " ";
+                        }
                     }
                     else
                     {
-                        switch(VisibleСells.GetCellsToRC(row, column).Status)
+                        switch(VisibleСells[row, column].Status)
                         {
                             case CellStatus.Number:
-                                screen += VisibleСells.GetCellsToRC(row, column).Value + " ";
+                                screen += VisibleСells[row, column].Value + " ";
                                 break;
                             case CellStatus.Open:
                                 screen += "_" + " ";
