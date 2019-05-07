@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Common;
 
-namespace Core
+namespace Common
 {
-    public class ListСell
+    public class ListСell : IReadOnlyList<Cell>
     {
-        public List<Cell> Cells
+        private List<Cell> Cells
         {
             get;
-            private set;
+            set;
         }
 
         public ListСell()
@@ -44,6 +45,27 @@ namespace Core
             }
         }
 
+        public void AddListCells(ListСell cells)
+        {
+            foreach(Cell field in cells)
+            {
+                Add(field);
+            }
+        }
+
+        public void AddClick(Cell cell)
+        {
+            if (!Cells.Remove(cell))
+            {
+                Cells.Add(cell);
+            }
+        }
+
+        public void Clear()
+        {
+            Cells.Clear();
+        }
+
         public override string ToString()
         {
             var str = "";
@@ -56,13 +78,13 @@ namespace Core
             return str;
         }
 
-        public List<Cell> GetAroundCellsNoTags(Cell field, int maxValue)
+        public ListСell GetAroundCellsNoTags(Cell field, int maxValue)
         {
-            var AroundCells = new List<Cell>();
+            var AroundCells = new ListСell();
 
-            for (var row = field.Row - 1; row < field.Row + 2; row++)
+            for (var row = field.Row - 1; row <= field.Row + 1; row++)
             {
-                for (var column = field.Column - 1; column < field.Column + 2; column++)
+                for (var column = field.Column - 1; column <= field.Column + 1; column++)
                 {
                     if ((0 < row && row < maxValue + 1) &&
                         (0 < column && column < maxValue + 1))
@@ -80,14 +102,64 @@ namespace Core
             return AroundCells;
         }
 
-        public Cell GetCellsToRC(int row, int column)
+        static public ListСell GetReverseCells(int maxValue, params ListСell[] cells)
         {
-            return Cells[Cells.IndexOf(new Cell(row, column))];
+            var listСell = new ListСell();
+
+            foreach (ListСell field in cells)
+            {
+                listСell.AddListCells(field);
+            }
+
+            var listNoTags = new ListСell();
+            
+            for (var row = 1; row <= maxValue; row++)
+            {
+                for (var column = 1; column <= maxValue; column++)
+                {
+                    var item = new Cell(row, column);
+                    if (!listСell.IsPresent(item))
+                    {
+                        listNoTags.Add(item);
+                    }
+                }
+            }
+
+            return listNoTags;
         }
 
         public bool IsCompleted(int countField, int countMines)
         {
             return Cells.Count == countField - countMines;
         }
+
+        public Cell this[int row, int column]
+        {
+            get
+            {
+                return Cells[Cells.IndexOf(new Cell(row, column))];
+            }
+        }        
+
+        #region IReadOnlyList<Cell> definition
+        public Cell this[int index]
+        {
+            get
+            {
+                return Cells[index];
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return Cells.Count;
+            }
+        }
+
+        public IEnumerator<Cell> GetEnumerator() { return Cells.GetEnumerator(); }
+        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }        
+        #endregion
     }
 }
