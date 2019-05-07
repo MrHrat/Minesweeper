@@ -119,6 +119,8 @@ namespace Core
         public override string ToString()
         {
             var screen = "";
+            var listCells = new ListСell();
+            listCells.AddListCells(VisibleСells, MarkСells);
 
             for (var row = 1; row < SizeField + 1; row++)
             {
@@ -126,24 +128,20 @@ namespace Core
                 {
                     if (!VisibleСells.IsPresent(new Cell(row, column)))
                     {
-                        if (MarkСells.IsPresent(new Cell(row, column)))
-                        {
-                            screen += "F" + " ";                            
-                        }
-                        else
-                        {
-                            screen += "O" + " ";
-                        }
+                        screen += "O" + " ";                        
                     }
                     else
                     {
-                        switch(VisibleСells[row, column].Status)
+                        switch(listCells[row, column].Status)
                         {
                             case CellStatus.Number:
-                                screen += VisibleСells[row, column].Value + " ";
+                                screen += listCells[row, column].Value + " ";
                                 break;
                             case CellStatus.Open:
                                 screen += "_" + " ";
+                                break;
+                            case CellStatus.Mark:
+                                screen += "F" + " ";
                                 break;
                         }
                     }
