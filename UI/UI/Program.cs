@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Algorithm;
 using Common;
 using Core;
+using static System.Console;
 
 namespace UI
 {
@@ -8,30 +9,39 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            GameField game = new GameField();
+            var game = new GameField(10, 10);
 
             game.GenerateMines();
 
             while (true)
             {
-                Console.Write(game.ToString());
+                Write(game.ToString());
 
                 if(game.Status != GameStatus.Play)
                 {
-                    Console.Write(game.Status);
+                    Write(game.Status);
                     break;
-                }
+                }                
 
-                Console.WriteLine("Select a cell:");
-                Console.Write("Row = ");
-                int row = int.Parse(Console.ReadLine());
-                Console.Write("Column = ");
-                int column = int.Parse(Console.ReadLine());
-
-                game.OpenCell(new Cell(row, column));
+                var cell = TestAlgorithm.GetСhoice(game.VisibleСells, game.MarkСells, game.SizeField, game.CountMines);
+                WriteLine("R = {0,4}; C = {1,4}; Mark = {2,4}", cell.Row, cell.Column, cell.Status);
+                game.OpenCell(cell);
+                ReadKey();
+                WriteLine();
             }            
 
-            Console.ReadKey();
+            ReadKey();
+        }
+
+        Cell SelectCell()
+        {
+            WriteLine("Select a cell:");
+            Write("Row = ");
+            var row = int.Parse(ReadLine());
+            Write("Column = ");
+            var column = int.Parse(ReadLine());
+
+            return new Cell(row, column);
         }
     }
 }
