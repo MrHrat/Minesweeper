@@ -60,15 +60,15 @@ namespace Common
         {
             Random rand = new Random();
 
-            var row = rand.Next(maxCell.Row) + 1;
-            var column = rand.Next(maxCell.Column) + 1;
+            var row = rand.Next(maxCell.Row);
+            var column = rand.Next(maxCell.Column);
 
             return new Cell(row, column);
         }
 
         public override string ToString()
         {
-            return string.Format("R = {0,4}; C = {1,4}; Status = {2,4}; Value = {3,4}", Row, Column, Status, Value);
+            return string.Format("R = {0,4}; C = {1,4}; Status = {2,4}; Value = {3,4}", Row + 1, Column + 1, Status, Value);
         }
     }
 }

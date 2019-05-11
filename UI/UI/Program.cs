@@ -22,7 +22,7 @@ namespace UI
             do
             {
                 Clear();
-                WriteLine("Size: {0,4}; Count mine: {1,4};", game.Size, game.CountMines);
+                WriteLine("Size: R ={0,4} C ={1,4}; Count mine: {2,4};", game.Size.Row, game.Size.Column, game.CountMines);
                 Write(game);
                 
                 if (game.Status == GameStatus.Play)
@@ -55,14 +55,14 @@ namespace UI
 
         static Cell SelectCell()
         {
-            string input = String.Empty;
+            var input = string.Empty;
             try
             {
                 WriteLine("Select a cell:");
                 Write("Row = ");
-                var row = int.Parse(ReadLine());
+                var row = int.Parse(ReadLine()) - 1;
                 Write("Column = ");
-                var column = int.Parse(ReadLine());
+                var column = int.Parse(ReadLine()) - 1;
                 Write("Marked = ");
                 var mark = int.Parse(ReadLine());
 

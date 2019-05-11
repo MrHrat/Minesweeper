@@ -162,9 +162,9 @@ namespace Core
             var listCells = new ListСell();
             listCells.Add(VisibleСells, Marks);
 
-            for (var row = 1; row < Size.Row + 1; row++)
+            for (var row = 0; row < Size.Row; row++)
             {
-                for (var column = 1; column < Size.Column + 1; column++)
+                for (var column = 0; column < Size.Column; column++)
                 {
                     switch(listCells[row, column].Status)
                     {

@@ -92,8 +92,8 @@ namespace Common
             {
                 for (var column = field.Column - 1; column <= field.Column + 1; column++)
                 {
-                    if ((0 < row && row < maxCell.Row + 1) &&
-                        (0 < column && column < maxCell.Column + 1))
+                    if ((0 <= row && row < maxCell.Row) &&
+                        (0 <= column && column < maxCell.Column))
                     {
                         if (!(row == field.Row && column == field.Column))
                         {
@@ -119,9 +119,9 @@ namespace Common
 
             var listNoTags = new ListСell();
             
-            for (var row = 1; row <= maxCell.Row; row++)
+            for (var row = 0; row < maxCell.Row; row++)
             {
-                for (var column = 1; column <= maxCell.Column; column++)
+                for (var column = 0; column < maxCell.Column; column++)
                 {
                     var item = new Cell(row, column);
                     if (!listСell.IsPresent(item))
