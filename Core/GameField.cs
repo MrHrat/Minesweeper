@@ -31,7 +31,7 @@ namespace Core
             private set;
         } = new ListСell();
 
-        public ListСell MarkСells
+        public ListСell Marks
         {
             get;
             private set;
@@ -53,16 +53,21 @@ namespace Core
 
         public void GenerateMines()
         {
-            Mines.Generate(CountMines, SizeField);
+            var randomCellsList = ListСell.Generate(CountMines, SizeField);
+
+            foreach (Cell field in randomCellsList)
+            {
+                Mines.Add(new CellMine(field));
+            }
         }
 
         public void OpenCell(Cell field)
         {
-            if(Status == GameStatus.Play)
+            if (Status == GameStatus.Play)
             {
                 if (field.Status == CellStatus.Mark)
                 {
-                    MarkСells.AddClick(field);
+                    Marks.AddClick(field);
                 }
                 else if (!Mines.IsPresent(field))
                 {
@@ -71,13 +76,48 @@ namespace Core
                     if (VisibleСells.IsCompleted(SizeField * SizeField, CountMines))
                     {
                         Status = GameStatus.Victory;
+                        VisibleMarkMine();
+                        VisibleСells.Add(Mines);
                     }                    
                 }
                 else
                 {
                     Status = GameStatus.GameOver;
+                    VisibleСells.Add(new CellExplosion(field));
+                    VisibleMarkMine();
+                    VisibleСells.Add(Mines);
                 }
             }
+        }
+
+        private void VisibleMarkMine()
+        {
+            var markMineList = new ListСell();
+
+            foreach (Cell fieldIntersection in ListСell.Intersection(Marks, Mines))
+            {
+                markMineList.Add(new CellMine(fieldIntersection, true));
+            }
+
+            VisibleСells.Add(markMineList);
+        }
+
+
+        private ListСell GetRemovedMarkedMines()
+        {
+            var markMineList = new ListСell();
+
+            foreach (Cell field in Mines)
+            {
+                if (Marks.IsPresent(field))
+                {
+                    Marks.Remove(field);
+                    Mines.Remove(field);
+                    markMineList.Add(new CellMine(field, true));
+                }
+            }
+
+            return markMineList;
         }
 
         private void AddVisibleСell(Cell field)
@@ -120,31 +160,36 @@ namespace Core
         {
             var screen = "";
             var listCells = new ListСell();
-            listCells.AddListCells(VisibleСells, MarkСells);
+            listCells.Add(VisibleСells, Marks);
 
             for (var row = 1; row < SizeField + 1; row++)
             {
                 for (var column = 1; column < SizeField + 1; column++)
                 {
-                    if (!VisibleСells.IsPresent(new Cell(row, column)))
+                    switch(listCells[row, column].Status)
                     {
-                        screen += "O" + " ";                        
-                    }
-                    else
-                    {
-                        switch(listCells[row, column].Status)
-                        {
-                            case CellStatus.Number:
-                                screen += listCells[row, column].Value + " ";
-                                break;
-                            case CellStatus.Open:
-                                screen += "_" + " ";
-                                break;
-                            case CellStatus.Mark:
-                                screen += "F" + " ";
-                                break;
-                        }
-                    }
+                        case CellStatus.Absent:
+                            screen += "O" + " ";
+                            break;
+                        case CellStatus.Number:
+                            screen += listCells[row, column].Value + " ";
+                            break;
+                        case CellStatus.Open:
+                            screen += "_" + " ";
+                            break;
+                        case CellStatus.Mark:
+                            screen += "F" + " ";
+                            break;
+                        case CellStatus.MarkMine:
+                            screen += "M" + " ";
+                            break;
+                        case CellStatus.Mine:
+                            screen += "H" + " ";
+                            break;
+                        case CellStatus.Explosion:
+                            screen += "E" + " ";
+                            break;
+                    }                    
                 }
 
                 screen += "\n";

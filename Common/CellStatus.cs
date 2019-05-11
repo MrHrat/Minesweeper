@@ -6,8 +6,12 @@ namespace Common
 {
     public enum CellStatus
     {
+        Absent = -1,
         Open = 0,
         Mark,
-        Number
+        Number,
+        MarkMine,
+        Mine,
+        Explosion,
     }
 }

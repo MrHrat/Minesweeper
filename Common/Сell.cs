@@ -19,7 +19,7 @@ namespace Common
         public virtual CellStatus Status
         {
             get;
-            private set;
+            protected set;
         } = CellStatus.Open;
 
         public virtual int Value
@@ -64,6 +64,11 @@ namespace Common
             var column = rand.Next(maxValue) + 1;
 
             return new Cell(row, column);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("R = {0,4}; C = {1,4}; Status = {2,4}; Value = {3,4}", Row, Column, Status, Value);
         }
     }
 }

@@ -19,19 +19,6 @@ namespace Common
             Cells = new List<Cell>();
         }
 
-        public void Generate(int count, int maxValue)
-        {
-            while (Cells.Count < count)
-            {
-                var newCell = Cell.Random(maxValue);
-
-                if (!IsPresent(newCell))
-                {
-                    Cells.Add(newCell);
-                }
-            }
-        }
-
         public bool IsPresent(Cell Cell)
         {
             return Cells.IndexOf(Cell) != -1 ? true : false;
@@ -45,7 +32,12 @@ namespace Common
             }
         }
 
-        public void AddListCells(params ListСell[] cells)
+        public bool Remove(Cell field)
+        {
+            return Cells.Remove(Cells[Cells.IndexOf(field)]);
+        }
+
+        public void Add(params ListСell[] cells)
         {
             foreach (ListСell cellsList in cells)
             {
@@ -64,6 +56,17 @@ namespace Common
             }
         }
 
+        public void AddClick(params ListСell[] cells)
+        {
+            foreach (ListСell cellsList in cells)
+            {
+                foreach (Cell field in cellsList)
+                {
+                    AddClick(field);
+                }
+            }
+        }
+
         public void Clear()
         {
             Cells.Clear();
@@ -75,7 +78,7 @@ namespace Common
 
             foreach (Cell value in Cells)
             {
-                str += string.Format("Row : {0,4}; Column : {1,4}", value.Row, value.Column);
+                str += value.ToString() + "\n";
             }
 
             return str;
@@ -105,13 +108,13 @@ namespace Common
             return AroundCells;
         }
 
-        static public ListСell GetReverseCells(int maxValue, params ListСell[] cells)
+        public static ListСell GetReverseCells(int maxValue, params ListСell[] cells)
         {
             var listСell = new ListСell();
 
             foreach (ListСell field in cells)
             {
-                listСell.AddListCells(field);
+                listСell.Add(field);
             }
 
             var listNoTags = new ListСell();
@@ -131,6 +134,74 @@ namespace Common
             return listNoTags;
         }
 
+        public static ListСell Intersection(params ListСell[] sets)
+        {
+            var intersection = new ListСell();
+
+            foreach (Cell field in sets[0])
+            {
+                if (sets[1].IsPresent(field))
+                {
+                    intersection.Add(field);
+                }
+            }
+
+            if (sets.Length > 2)
+            {
+                var list = new List<ListСell>();
+                list.Add(intersection);
+
+                for (var i = 2; i < sets.Length; i++)
+                {
+                    list.Add(sets[i]);
+                }
+
+                return Intersection(list.ToArray());
+            }
+            
+            return intersection;
+        }
+
+        public static ListСell RelativeComplement(params ListСell[] sets)
+        {
+            var relativeComplement = new ListСell();
+
+            foreach (Cell field in sets[0])
+            {
+                if (!sets[1].IsPresent(field))
+                {
+                    relativeComplement.Add(field);
+                }
+            }
+
+            if (sets.Length > 2)
+            {
+                var list = new List<ListСell>();
+                list.Add(relativeComplement);
+
+                for (var i = 2; i < sets.Length; i++)
+                {
+                    list.Add(sets[i]);
+                }
+
+                return RelativeComplement(list.ToArray());
+            }            
+
+            return relativeComplement;
+        }
+
+        public static ListСell Generate(int count, int maxValue)
+        {
+            var gList = new ListСell();
+
+            while (gList.Count < count)
+            {
+                gList.Add(Cell.Random(maxValue));
+            }
+
+            return gList;
+        }
+
         public bool IsCompleted(int countField, int countMines)
         {
             return Cells.Count == countField - countMines;
@@ -140,7 +211,14 @@ namespace Common
         {
             get
             {
-                return Cells[Cells.IndexOf(new Cell(row, column))];
+                if (Cells.IndexOf(new Cell(row, column)) != -1)
+                {
+                    return Cells[Cells.IndexOf(new Cell(row, column))];
+                }
+                else
+                {
+                    return new CellAbsent(new Cell(row, column));
+                }
             }
         }        
 
