@@ -84,7 +84,7 @@ namespace Common
             return str;
         }
 
-        public ListСell GetAroundCellsNoTags(Cell field, int maxValue)
+        public ListСell GetAroundCellsNoTags(Cell field, Cell maxCell)
         {
             var AroundCells = new ListСell();
 
@@ -92,8 +92,8 @@ namespace Common
             {
                 for (var column = field.Column - 1; column <= field.Column + 1; column++)
                 {
-                    if ((0 < row && row < maxValue + 1) &&
-                        (0 < column && column < maxValue + 1))
+                    if ((0 < row && row < maxCell.Row + 1) &&
+                        (0 < column && column < maxCell.Column + 1))
                     {
                         if (!(row == field.Row && column == field.Column))
                         {
@@ -108,7 +108,7 @@ namespace Common
             return AroundCells;
         }
 
-        public static ListСell GetReverseCells(int maxValue, params ListСell[] cells)
+        public static ListСell GetReverseCells(Cell maxCell, params ListСell[] cells)
         {
             var listСell = new ListСell();
 
@@ -119,9 +119,9 @@ namespace Common
 
             var listNoTags = new ListСell();
             
-            for (var row = 1; row <= maxValue; row++)
+            for (var row = 1; row <= maxCell.Row; row++)
             {
-                for (var column = 1; column <= maxValue; column++)
+                for (var column = 1; column <= maxCell.Column; column++)
                 {
                     var item = new Cell(row, column);
                     if (!listСell.IsPresent(item))
@@ -190,21 +190,21 @@ namespace Common
             return relativeComplement;
         }
 
-        public static ListСell Generate(int count, int maxValue)
+        public static ListСell Generate(Cell maxCell, int count)
         {
             var gList = new ListСell();
 
             while (gList.Count < count)
             {
-                gList.Add(Cell.Random(maxValue));
+                gList.Add(Cell.Random(maxCell));
             }
 
             return gList;
         }
 
-        public bool IsCompleted(int countField, int countMines)
+        public bool IsCompleted(Cell maxCell, int countMines)
         {
-            return Cells.Count == countField - countMines;
+            return Cells.Count == maxCell.Row * maxCell.Column - countMines;
         }
 
         public Cell this[int row, int column]

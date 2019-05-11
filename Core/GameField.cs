@@ -13,11 +13,11 @@ namespace Core
             private set;
         } = 10;
 
-        public int SizeField
+        public Cell Size
         {
             get;
             private set;
-        } = 10;
+        } = new Cell(10, 10);
 
         public GameStatus Status
         {
@@ -45,15 +45,15 @@ namespace Core
 
         public GameField() { }
 
-        public GameField(int sizeField, int countMines)
+        public GameField(int sizeRow, int sizeColumn, int countMines)
         {
-            SizeField = sizeField;
+            Size = new Cell(sizeRow, sizeColumn);
             CountMines = countMines;
         }
 
         public void GenerateMines()
         {
-            var randomCellsList = ListСell.Generate(CountMines, SizeField);
+            var randomCellsList = ListСell.Generate(Size, CountMines);
 
             foreach (Cell field in randomCellsList)
             {
@@ -73,7 +73,7 @@ namespace Core
                 {
                     AddVisibleСell(field);
 
-                    if (VisibleСells.IsCompleted(SizeField * SizeField, CountMines))
+                    if (VisibleСells.IsCompleted(Size, CountMines))
                     {
                         Status = GameStatus.Victory;
                         VisibleMarkMine();
@@ -128,7 +128,7 @@ namespace Core
             {
                 VisibleСells.Add(new Cell(field.Row, field.Column));
                 
-                var AroundCells = VisibleСells.GetAroundCellsNoTags(field, SizeField);
+                var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
                 foreach (Cell acell in AroundCells)
                 {
                     AddVisibleСell(acell);
@@ -142,7 +142,7 @@ namespace Core
 
         private int CountMineAroundCell(Cell field)
         {
-            var AroundCells = VisibleСells.GetAroundCellsNoTags(field, SizeField);
+            var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
             var countMine = 0;
 
             foreach (Cell acell in AroundCells)
@@ -162,9 +162,9 @@ namespace Core
             var listCells = new ListСell();
             listCells.Add(VisibleСells, Marks);
 
-            for (var row = 1; row < SizeField + 1; row++)
+            for (var row = 1; row < Size.Row + 1; row++)
             {
-                for (var column = 1; column < SizeField + 1; column++)
+                for (var column = 1; column < Size.Column + 1; column++)
                 {
                     switch(listCells[row, column].Status)
                     {

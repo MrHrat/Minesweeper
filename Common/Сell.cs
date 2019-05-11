@@ -56,12 +56,12 @@ namespace Common
             return Row == item.Row && Column == item.Column;
         }
 
-        public static Cell Random(int maxValue)
+        public static Cell Random(Cell maxCell)
         {
             Random rand = new Random();
 
-            var row = rand.Next(maxValue) + 1;
-            var column = rand.Next(maxValue) + 1;
+            var row = rand.Next(maxCell.Row) + 1;
+            var column = rand.Next(maxCell.Column) + 1;
 
             return new Cell(row, column);
         }

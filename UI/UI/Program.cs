@@ -10,17 +10,19 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            Write("Select a size field: ");
-            var size = int.Parse(ReadLine());
+            Write("Select a size field row: ");
+            var sizeRow = int.Parse(ReadLine());
+            Write("Select a size field column: ");
+            var sizeColumn = int.Parse(ReadLine());
             Write("Select a count mine: ");
             var mine = int.Parse(ReadLine());
-            var game = new GameField(size, mine);
+            var game = new GameField(sizeRow, sizeColumn, mine);
             game.GenerateMines();
             var field = new Cell(0, 0);
             do
             {
                 Clear();
-                WriteLine("Size: {0,4}; Count mine: {1,4};", game.SizeField, game.CountMines);
+                WriteLine("Size: {0,4}; Count mine: {1,4};", game.Size, game.CountMines);
                 Write(game);
                 
                 if (game.Status == GameStatus.Play)
@@ -36,7 +38,7 @@ namespace UI
                             field = SelectCell();
                             break;
                         default:
-                            field = TestAlgorithm.GetСhoice(game.VisibleСells, game.Marks, game.SizeField, game.CountMines);
+                            field = TestAlgorithm.GetСhoice(game.VisibleСells, game.Marks, game.Size, game.CountMines);
                             break;
                     }
                     WriteLine(field);

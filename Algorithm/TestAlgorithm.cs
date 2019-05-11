@@ -7,8 +7,8 @@ namespace Algorithm
 {
     public class TestAlgorithm
     {
-        private int _size;
         private int _countMine;
+        private Cell _size;
         private ListСell _listСell { set; get; }
         private ListСell _markCells { set; get; }
 
@@ -24,7 +24,7 @@ namespace Algorithm
             return _testAlgorithmInstance;
         }
 
-        public static Cell GetСhoice(ListСell listСell, ListСell markCells, int size, int countMine)
+        public static Cell GetСhoice(ListСell listСell, ListСell markCells, Cell size, int countMine)
         {
             var TestAlgorithm = GetInstance();
             TestAlgorithm._size = size;
@@ -108,7 +108,7 @@ namespace Algorithm
             var listNoTags = ListСell.GetReverseCells(_size, _listСell, _markCells);
 
             var minPercent = 10.0;
-            var totalPercent = 1.0 * (_countMine - _markCells.Count) / (_size * _size - _listСell.Count);
+            var totalPercent = 1.0 * (_countMine - _markCells.Count) / (_size.Row * _size.Column - _listСell.Count);
             var randomList = new ListСell();
 
             foreach (Cell field in listNoTags)
