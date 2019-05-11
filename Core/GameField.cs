@@ -13,11 +13,11 @@ namespace Core
             private set;
         } = 10;
 
-        public Cell Size
+        public Сell Size
         {
             get;
             private set;
-        } = new Cell(10, 10);
+        } = new Сell(10, 10);
 
         public GameStatus Status
         {
@@ -47,7 +47,7 @@ namespace Core
 
         public GameField(int sizeRow, int sizeColumn, int countMines)
         {
-            Size = new Cell(sizeRow, sizeColumn);
+            Size = new Сell(sizeRow, sizeColumn);
             CountMines = countMines;
         }
 
@@ -55,13 +55,13 @@ namespace Core
         {
             var randomCellsList = ListСell.Generate(Size, CountMines);
 
-            foreach (Cell field in randomCellsList)
+            foreach (Сell field in randomCellsList)
             {
                 Mines.Add(new CellMine(field));
             }
         }
 
-        public void OpenCell(Cell field)
+        public void OpenCell(Сell field)
         {
             if (Status == GameStatus.Play)
             {
@@ -94,7 +94,7 @@ namespace Core
         {
             var markMineList = new ListСell();
 
-            foreach (Cell fieldIntersection in ListСell.Intersection(Marks, Mines))
+            foreach (Сell fieldIntersection in ListСell.Intersection(Marks, Mines))
             {
                 markMineList.Add(new CellMine(fieldIntersection, true));
             }
@@ -107,7 +107,7 @@ namespace Core
         {
             var markMineList = new ListСell();
 
-            foreach (Cell field in Mines)
+            foreach (Сell field in Mines)
             {
                 if (Marks.IsPresent(field))
                 {
@@ -120,16 +120,16 @@ namespace Core
             return markMineList;
         }
 
-        private void AddVisibleСell(Cell field)
+        private void AddVisibleСell(Сell field)
         {
             var countMine = CountMineAroundCell(field);
 
             if (countMine == 0)
             {
-                VisibleСells.Add(new Cell(field.Row, field.Column));
+                VisibleСells.Add(new Сell(field.Row, field.Column));
                 
                 var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
-                foreach (Cell acell in AroundCells)
+                foreach (Сell acell in AroundCells)
                 {
                     AddVisibleСell(acell);
                 }
@@ -140,12 +140,12 @@ namespace Core
             }
         }
 
-        private int CountMineAroundCell(Cell field)
+        private int CountMineAroundCell(Сell field)
         {
             var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
             var countMine = 0;
 
-            foreach (Cell acell in AroundCells)
+            foreach (Сell acell in AroundCells)
             {
                 if (Mines.IsPresent(acell))
                 {

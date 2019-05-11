@@ -1,114 +1,25 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using Common;
-
-namespace Common
+﻿namespace Common
 {
-    public class ListСell : IReadOnlyList<Cell>
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ListСell : IReadOnlyList<Сell>
     {
-        private List<Cell> Cells
+        private List<Сell> Cells
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListСell"/> class.
+        /// </summary>
         public ListСell()
         {
-            Cells = new List<Cell>();
+            Cells = new List<Сell>();
         }
 
-        public bool IsPresent(Cell Cell)
-        {
-            return Cells.IndexOf(Cell) != -1 ? true : false;
-        }
-
-        public void Add(Cell newCell)
-        {
-            if (!IsPresent(newCell))
-            {
-                Cells.Add(newCell);
-            }
-        }
-
-        public bool Remove(Cell field)
-        {
-            return Cells.Remove(Cells[Cells.IndexOf(field)]);
-        }
-
-        public void Add(params ListСell[] cells)
-        {
-            foreach (ListСell cellsList in cells)
-            {
-                foreach (Cell field in cellsList)
-                {
-                    Add(field);
-                }
-            }            
-        }
-
-        public void AddClick(Cell cell)
-        {
-            if (!Cells.Remove(cell))
-            {
-                Cells.Add(cell);
-            }
-        }
-
-        public void AddClick(params ListСell[] cells)
-        {
-            foreach (ListСell cellsList in cells)
-            {
-                foreach (Cell field in cellsList)
-                {
-                    AddClick(field);
-                }
-            }
-        }
-
-        public void Clear()
-        {
-            Cells.Clear();
-        }
-
-        public override string ToString()
-        {
-            var str = "";
-
-            foreach (Cell value in Cells)
-            {
-                str += value.ToString() + "\n";
-            }
-
-            return str;
-        }
-
-        public ListСell GetAroundCellsNoTags(Cell field, Cell maxCell)
-        {
-            var AroundCells = new ListСell();
-
-            for (var row = field.Row - 1; row <= field.Row + 1; row++)
-            {
-                for (var column = field.Column - 1; column <= field.Column + 1; column++)
-                {
-                    if ((0 <= row && row < maxCell.Row) &&
-                        (0 <= column && column < maxCell.Column))
-                    {
-                        if (!(row == field.Row && column == field.Column))
-                        {
-                            var newCell = new Cell(row, column);
-                            if (!IsPresent(newCell))
-                                AroundCells.Add(newCell);
-                        }
-                    }
-                }
-            }
-
-            return AroundCells;
-        }
-
-        public static ListСell GetReverseCells(Cell maxCell, params ListСell[] cells)
+        public static ListСell GetReverseCells(Сell maxCell, params ListСell[] cells)
         {
             var listСell = new ListСell();
 
@@ -118,12 +29,12 @@ namespace Common
             }
 
             var listNoTags = new ListСell();
-            
+
             for (var row = 0; row < maxCell.Row; row++)
             {
                 for (var column = 0; column < maxCell.Column; column++)
                 {
-                    var item = new Cell(row, column);
+                    var item = new Сell(row, column);
                     if (!listСell.IsPresent(item))
                     {
                         listNoTags.Add(item);
@@ -138,7 +49,7 @@ namespace Common
         {
             var intersection = new ListСell();
 
-            foreach (Cell field in sets[0])
+            foreach (Сell field in sets[0])
             {
                 if (sets[1].IsPresent(field))
                 {
@@ -158,7 +69,7 @@ namespace Common
 
                 return Intersection(list.ToArray());
             }
-            
+
             return intersection;
         }
 
@@ -166,7 +77,7 @@ namespace Common
         {
             var relativeComplement = new ListСell();
 
-            foreach (Cell field in sets[0])
+            foreach (Сell field in sets[0])
             {
                 if (!sets[1].IsPresent(field))
                 {
@@ -185,62 +96,143 @@ namespace Common
                 }
 
                 return RelativeComplement(list.ToArray());
-            }            
+            }
 
             return relativeComplement;
         }
 
-        public static ListСell Generate(Cell maxCell, int count)
+        public static ListСell Generate(Сell maxCell, int count)
         {
             var gList = new ListСell();
 
-            while (gList.Count < count)
+            while (gList.Count< count)
             {
-                gList.Add(Cell.Random(maxCell));
+                gList.Add(Сell.Random(maxCell));
             }
 
             return gList;
         }
 
-        public bool IsCompleted(Cell maxCell, int countMines)
+        public bool IsPresent(Сell cell)
         {
-            return Cells.Count == maxCell.Row * maxCell.Column - countMines;
+            return Cells.IndexOf(cell) != -1 ? true : false;
         }
 
-        public Cell this[int row, int column]
+        public void Add(Сell newCell)
+        {
+            if (!IsPresent(newCell))
+            {
+                Cells.Add(newCell);
+            }
+        }
+
+        public bool Remove(Сell field)
+        {
+            return Cells.Remove(Cells[Cells.IndexOf(field)]);
+        }
+
+        public void Add(params ListСell[] cells)
+        {
+            foreach (ListСell cellsList in cells)
+            {
+                foreach (Сell field in cellsList)
+                {
+                    Add(field);
+                }
+            }
+        }
+
+        public void AddClick(Сell cell)
+        {
+            if (!Cells.Remove(cell))
+            {
+                Cells.Add(cell);
+            }
+        }
+
+        public void AddClick(params ListСell[] cells)
+        {
+            foreach (ListСell cellsList in cells)
+            {
+                foreach (Сell field in cellsList)
+                {
+                    AddClick(field);
+                }
+            }
+        }
+
+        public void Clear()
+        {
+            Cells.Clear();
+        }
+
+        public override string ToString()
+        {
+            var str = string.Empty;
+
+            foreach (Сell value in Cells)
+            {
+                str += value.ToString() + "\n";
+            }
+
+            return str;
+        }
+
+        public ListСell GetAroundCellsNoTags(Сell field, Сell maxCell)
+        {
+            var aroundCells = new ListСell();
+
+            for (var row = field.Row - 1; row <= field.Row + 1; row++)
+            {
+                for (var column = field.Column - 1; column <= field.Column + 1; column++)
+                {
+                    if (row >= 0 && row < maxCell.Row &&
+                        column >= 0 && column < maxCell.Column)
+                    {
+                        if (!(row == field.Row && column == field.Column))
+                        {
+                            var newCell = new Сell(row, column);
+                            if (!IsPresent(newCell))
+                            {
+                                aroundCells.Add(newCell);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return aroundCells;
+        }
+
+        public bool IsCompleted(Сell maxCell, int countMines) => Cells.Count == (maxCell.Row * maxCell.Column) - countMines;
+
+        public Сell this[int row, int column]
         {
             get
             {
-                if (Cells.IndexOf(new Cell(row, column)) != -1)
+                if (Cells.IndexOf(new Сell(row, column)) != -1)
                 {
-                    return Cells[Cells.IndexOf(new Cell(row, column))];
+                    return Cells[Cells.IndexOf(new Сell(row, column))];
                 }
                 else
                 {
-                    return new CellAbsent(new Cell(row, column));
+                    return new CellAbsent(new Сell(row, column));
                 }
             }
-        }        
-
-        #region IReadOnlyList<Cell> definition
-        public Cell this[int index]
-        {
-            get
-            {
-                return Cells[index];
-            }
         }
 
-        public int Count
+        public Сell this[int index] => Cells[index];
+
+        public int Count => Cells.Count;
+
+        public IEnumerator<Сell> GetEnumerator()
         {
-            get
-            {
-                return Cells.Count;
-            }
+            return Cells.GetEnumerator();
         }
 
-        public IEnumerator<Cell> GetEnumerator() { return Cells.GetEnumerator(); }
-        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }        
-        #endregion
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

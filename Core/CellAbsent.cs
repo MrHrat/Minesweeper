@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Core
 {
-    public class CellAbsent : Cell
+    public class CellAbsent : Сell
     {
-        public CellAbsent(Cell cell) : base(cell.Row, cell.Column)
+        public CellAbsent(Сell cell) : base(cell.Row, cell.Column)
         {
             Status = CellStatus.Absent;
         }

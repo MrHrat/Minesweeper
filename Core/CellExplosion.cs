@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Core
 {
-    class CellExplosion : Cell
+    class CellExplosion : Сell
     {
-        public CellExplosion(Cell cell) : base(cell.Row, cell.Column)
+        public CellExplosion(Сell cell) : base(cell.Row, cell.Column)
         {
             Status = CellStatus.Explosion;
         }

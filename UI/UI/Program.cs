@@ -18,7 +18,7 @@ namespace UI
             var mine = int.Parse(ReadLine());
             var game = new GameField(sizeRow, sizeColumn, mine);
             game.GenerateMines();
-            var field = new Cell(0, 0);
+            var field = new Сell(0, 0);
             do
             {
                 Clear();
@@ -53,7 +53,7 @@ namespace UI
             } while (ReadKey().Key != ConsoleKey.Q);
         }
 
-        static Cell SelectCell()
+        static Сell SelectCell()
         {
             var input = string.Empty;
             try
@@ -66,7 +66,7 @@ namespace UI
                 Write("Marked = ");
                 var mark = int.Parse(ReadLine());
 
-                return new Cell(row, column, mark != 0);
+                return new Сell(row, column, mark != 0);
             }
             catch (FormatException)
             {

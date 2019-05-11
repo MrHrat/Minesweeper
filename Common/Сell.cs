@@ -1,8 +1,8 @@
-﻿using System;
-
-namespace Common
+﻿namespace Common
 {
-    public class Cell : IEquatable<Cell>
+    using System;
+
+    public class Сell : IEquatable<Сell>
     {
         public int Row
         {
@@ -20,15 +20,19 @@ namespace Common
         {
             get;
             protected set;
-        } = CellStatus.Open;
+        }
+
+        = CellStatus.Open;
 
         public virtual int Value
         {
             get;
             private set;
-        } = 0;
+        }
 
-        public Cell(int row, int column, bool mark = false)
+        = 0;
+
+        public Сell(int row, int column, bool mark = false)
         {
             Row = row;
             Column = column;
@@ -38,7 +42,7 @@ namespace Common
             }
         }
 
-        protected Cell(int row, int column, int value)
+        protected Сell(int row, int column, int value)
         {
             Row = row;
             Column = column;
@@ -46,24 +50,30 @@ namespace Common
             Value = value;
         }
 
-        public bool Equals(Cell item)
+        protected Сell()
         {
-            if (item == null)
-            {
-                return false;
-            }
-            
-            return Row == item.Row && Column == item.Column;
+            Row = 0;
+            Column = 0;
         }
 
-        public static Cell Random(Cell maxCell)
+        public static Сell Random(Сell maxCell)
         {
             Random rand = new Random();
 
             var row = rand.Next(maxCell.Row);
             var column = rand.Next(maxCell.Column);
 
-            return new Cell(row, column);
+            return new Сell(row, column);
+        }
+
+        public bool Equals(Сell item)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            return Row == item.Row && Column == item.Column;
         }
 
         public override string ToString()
