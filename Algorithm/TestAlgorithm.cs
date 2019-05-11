@@ -1,60 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Common;
-
-namespace Algorithm
+﻿namespace Algorithm
 {
+    using System;
+    using Common;
+
     public class TestAlgorithm
     {
-        private int _countMine;
-        private Cell _size;
-        private ListСell _listСell { set; get; }
-        private ListСell _markCells { set; get; }
+        private int countMine;
+        private Cell size;
 
-        private TestAlgorithm() { }
+        private ListСell ListСell { get; set; }
 
-        private static TestAlgorithm _testAlgorithmInstance = null;
+        private ListСell MarkCell { get; set; }
+
+        private TestAlgorithm()
+        {
+        }
+
+        private static TestAlgorithm testAlgorithmInstance = null;
+
         public static TestAlgorithm GetInstance()
         {
-            if (_testAlgorithmInstance == null)
+            if (testAlgorithmInstance == null)
             {
-                _testAlgorithmInstance = new TestAlgorithm();
+                testAlgorithmInstance = new TestAlgorithm();
             }
-            return _testAlgorithmInstance;
+
+            return testAlgorithmInstance;
         }
 
         public static Cell GetСhoice(ListСell listСell, ListСell markCells, Cell size, int countMine)
         {
-            var TestAlgorithm = GetInstance();
-            TestAlgorithm._size = size;
-            TestAlgorithm._countMine = countMine;
-            TestAlgorithm._listСell = listСell;
-            TestAlgorithm._markCells = markCells;
-            
-            if ((listСell.Count == 0) || (TestAlgorithm.GetMark() == null))
+            var testAlgorithm = GetInstance();
+            testAlgorithm.size = size;
+            testAlgorithm.countMine = countMine;
+            testAlgorithm.ListСell = listСell;
+            testAlgorithm.MarkCell = markCells;
+
+            if ((listСell.Count == 0) || (testAlgorithm.GetMark() == null))
             {
-                return Cell.Random(TestAlgorithm._size);
+                return Cell.Random(testAlgorithm.size);
             }
             else
             {
-                return TestAlgorithm.GetMark();                
+                return testAlgorithm.GetMark();
             }
         }
 
         public Cell GetMark()
         {
-            foreach (Cell cell in _listСell)
+            foreach (Cell cell in ListСell)
             {
                 if (cell.Value != 0)
                 {
-                    var aroundCells = _listСell.GetAroundCellsNoTags(cell, _size);
+                    var aroundCells = ListСell.GetAroundCellsNoTags(cell, size);
 
                     if (cell.Value == aroundCells.Count)
                     {
                         foreach (Cell field in aroundCells)
                         {
-                            if (!_markCells.IsPresent(field))
+                            if (!MarkCell.IsPresent(field))
                             {
                                 return new Cell(field.Row, field.Column, true);
                             }
@@ -68,11 +72,11 @@ namespace Algorithm
 
         public Cell Get100Choice()
         {
-            foreach (Cell cell in _listСell)
+            foreach (Cell cell in ListСell)
             {
                 if (cell.Value != 0)
                 {
-                    var aroundCells = _listСell.GetAroundCellsNoTags(cell, _size);
+                    var aroundCells = ListСell.GetAroundCellsNoTags(cell, size);
 
                     if (cell.Value != aroundCells.Count)
                     {
@@ -80,7 +84,7 @@ namespace Algorithm
 
                         foreach (Cell field in aroundCells)
                         {
-                            if (_markCells.IsPresent(field))
+                            if (MarkCell.IsPresent(field))
                             {
                                 countFlags++;
                             }
@@ -90,7 +94,7 @@ namespace Algorithm
                         {
                             foreach (Cell field in aroundCells)
                             {
-                                if (!_markCells.IsPresent(field))
+                                if (!MarkCell.IsPresent(field))
                                 {
                                     return field;
                                 }
@@ -105,15 +109,15 @@ namespace Algorithm
 
         public Cell GetBestRandomChoice()
         {
-            var listNoTags = ListСell.GetReverseCells(_size, _listСell, _markCells);
+            var listNoTags = ListСell.GetReverseCells(size, ListСell, MarkCell);
 
             var minPercent = 10.0;
-            var totalPercent = 1.0 * (_countMine - _markCells.Count) / (_size.Row * _size.Column - _listСell.Count);
+            var totalPercent = 1.0 * (countMine - MarkCell.Count) / ((size.Row * size.Column) - ListСell.Count);
             var randomList = new ListСell();
 
             foreach (Cell field in listNoTags)
             {
-                var numberCells = listNoTags.GetAroundCellsNoTags(field, _size);
+                var numberCells = listNoTags.GetAroundCellsNoTags(field, size);
                 var maxPercentCell = GetMaxPercentCell(numberCells);
                 AddRandomList(randomList, field, maxPercentCell, minPercent, totalPercent);
             }
@@ -122,7 +126,7 @@ namespace Algorithm
             return randomList[rand.Next(randomList.Count)];
         }
 
-        void AddRandomList(ListСell cells, Cell field, double maxPercentCell, double minPercent, double totalPercent)
+        private void AddRandomList(ListСell cells, Cell field, double maxPercentCell, double minPercent, double totalPercent)
         {
             if ((maxPercentCell < minPercent) && (maxPercentCell != 0))
             {
@@ -142,20 +146,20 @@ namespace Algorithm
             }
         }
 
-        double GetMaxPercentCell(ListСell cells)
+        private double GetMaxPercentCell(ListСell cells)
         {
             var maxPercentCell = 0.0;
 
             foreach (Cell numberField in cells)
             {
-                if (_listСell.IsPresent(numberField))
+                if (ListСell.IsPresent(numberField))
                 {
-                    var aroundCells = _listСell.GetAroundCellsNoTags(numberField, _size);
+                    var aroundCells = ListСell.GetAroundCellsNoTags(numberField, size);
                     var countFlags = 0;
 
                     foreach (Cell aroundField in aroundCells)
                     {
-                        if (_markCells.IsPresent(aroundField))
+                        if (MarkCell.IsPresent(aroundField))
                         {
                             countFlags++;
                         }
@@ -163,11 +167,11 @@ namespace Algorithm
 
                     var countNoFlags = aroundCells.Count - countFlags;
 
-                    var PercentCell = 1.0 * (_listСell[numberField.Row, numberField.Column].Value - countFlags) / countNoFlags;
+                    var percentCell = 1.0 * (ListСell[numberField.Row, numberField.Column].Value - countFlags) / countNoFlags;
 
-                    if (maxPercentCell < PercentCell)
+                    if (maxPercentCell < percentCell)
                     {
-                        maxPercentCell = PercentCell;
+                        maxPercentCell = percentCell;
                     }
                 }
             }
