@@ -1,49 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Common;
-
-namespace Core
+﻿namespace Core
 {
+    using Common;
+
     public class GameField
     {
         public int CountMines
         {
             get;
             private set;
-        } = 10;
+        }
+
+        = 10;
 
         public Сell Size
         {
             get;
             private set;
-        } = new Сell(10, 10);
+        }
+
+        = new Сell(10, 10);
 
         public GameStatus Status
         {
             get;
             private set;
-        } = GameStatus.Play;
+        }
+
+        = GameStatus.Play;
 
         public ListСell VisibleСells
         {
             get;
             private set;
-        } = new ListСell();
+        }
+
+        = new ListСell();
 
         public ListСell Marks
         {
             get;
             private set;
-        } = new ListСell();
+        }
+
+        = new ListСell();
 
         private ListСell Mines
         {
             get;
             set;
-        } = new ListСell();
+        }
 
-        public GameField() { }
+        = new ListСell();
+
+        public GameField()
+        {
+        }
 
         public GameField(int sizeRow, int sizeColumn, int countMines)
         {
@@ -78,7 +89,7 @@ namespace Core
                         Status = GameStatus.Victory;
                         VisibleMarkMine();
                         VisibleСells.Add(Mines);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -101,7 +112,6 @@ namespace Core
 
             VisibleСells.Add(markMineList);
         }
-
 
         private ListСell GetRemovedMarkedMines()
         {
@@ -127,25 +137,25 @@ namespace Core
             if (countMine == 0)
             {
                 VisibleСells.Add(new Сell(field.Row, field.Column));
-                
-                var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
-                foreach (Сell acell in AroundCells)
+
+                var aroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
+                foreach (Сell acell in aroundCells)
                 {
                     AddVisibleСell(acell);
                 }
             }
             else
             {
-                VisibleСells.Add(new CellValue(field, countMine));                
+                VisibleСells.Add(new CellValue(field, countMine));
             }
         }
 
         private int CountMineAroundCell(Сell field)
         {
-            var AroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
+            var aroundCells = VisibleСells.GetAroundCellsNoTags(field, Size);
             var countMine = 0;
 
-            foreach (Сell acell in AroundCells)
+            foreach (Сell acell in aroundCells)
             {
                 if (Mines.IsPresent(acell))
                 {
@@ -158,7 +168,7 @@ namespace Core
 
         public override string ToString()
         {
-            var screen = "";
+            var screen = string.Empty;
             var listCells = new ListСell();
             listCells.Add(VisibleСells, Marks);
 
@@ -166,7 +176,7 @@ namespace Core
             {
                 for (var column = 0; column < Size.Column; column++)
                 {
-                    switch(listCells[row, column].Status)
+                    switch (listCells[row, column].Status)
                     {
                         case CellStatus.Absent:
                             screen += "O" + " ";
@@ -189,7 +199,7 @@ namespace Core
                         case CellStatus.Explosion:
                             screen += "E" + " ";
                             break;
-                    }                    
+                    }
                 }
 
                 screen += "\n";

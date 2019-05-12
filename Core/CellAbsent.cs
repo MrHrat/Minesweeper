@@ -1,13 +1,11 @@
-﻿using Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core
+﻿namespace Core
 {
-    public class CellAbsent : Сell
+    using Common;
+
+    internal class CellAbsent : Сell
     {
-        public CellAbsent(Сell cell) : base(cell.Row, cell.Column)
+        public CellAbsent(Сell cell)
+            : base(cell.Row, cell.Column)
         {
             Status = CellStatus.Absent;
         }

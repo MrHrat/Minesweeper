@@ -1,13 +1,11 @@
-﻿using Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core
+﻿namespace Core
 {
-    class CellExplosion : Сell
+    using Common;
+
+    internal class CellExplosion : Сell
     {
-        public CellExplosion(Сell cell) : base(cell.Row, cell.Column)
+        public CellExplosion(Сell cell)
+            : base(cell.Row, cell.Column)
         {
             Status = CellStatus.Explosion;
         }
