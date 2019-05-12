@@ -169,8 +169,10 @@
         public override string ToString()
         {
             var screen = string.Empty;
-            var listCells = new ListСell();
-            listCells.Add(VisibleСells, Marks);
+            var listCells = new ListСell
+            {
+                { VisibleСells, Marks },
+            };
 
             for (var row = 0; row < Size.Row; row++)
             {

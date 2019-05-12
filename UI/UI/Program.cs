@@ -1,14 +1,14 @@
-﻿using Algorithm;
-using Common;
-using Core;
-using System;
-using static System.Console;
-
-namespace UI
+﻿namespace UI
 {
-    class Program
+    using System;
+    using Algorithm;
+    using Common;
+    using Core;
+    using static System.Console;
+
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Write("Select a size field row: ");
             var sizeRow = int.Parse(ReadLine());
@@ -24,13 +24,13 @@ namespace UI
                 Clear();
                 WriteLine("Size: R ={0,4} C ={1,4}; Count mine: {2,4};", game.Size.Row, game.Size.Column, game.CountMines);
                 Write(game);
-                
+
                 if (game.Status == GameStatus.Play)
                 {
                     WriteLine("Press the key");
                     WriteLine("1. Enter your cell");
                     WriteLine("2. Use the algorithm");
-                    
+
                     switch (ReadKey().Key)
                     {
                         case ConsoleKey.NumPad1:
@@ -41,6 +41,7 @@ namespace UI
                             field = TestAlgorithm.GetСhoice(game.VisibleСells, game.Marks, game.Size, game.CountMines);
                             break;
                     }
+
                     WriteLine(field);
                     game.OpenCell(field);
                     Write(game);
@@ -50,10 +51,11 @@ namespace UI
                     WriteLine(field);
                     Write(game.Status);
                 }
-            } while (ReadKey().Key != ConsoleKey.Q);
+            }
+            while (ReadKey().Key != ConsoleKey.Q);
         }
 
-        static Сell SelectCell()
+        private static Сell SelectCell()
         {
             var input = string.Empty;
             try
@@ -72,7 +74,7 @@ namespace UI
             {
                 WriteLine($"Unable to parse '{input}'");
                 return SelectCell();
-            }            
+            }
         }
     }
 }

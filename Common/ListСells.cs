@@ -105,7 +105,7 @@
         {
             var gList = new ListСell();
 
-            while (gList.Count< count)
+            while (gList.Count < count)
             {
                 gList.Add(Сell.Random(maxCell));
             }
