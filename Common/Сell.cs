@@ -78,7 +78,14 @@
 
         public override string ToString()
         {
-            return string.Format("R = {0,4}; C = {1,4}; Status = {2,4}; Value = {3,4}", Row + 1, Column + 1, Status, Value);
+            if (Value != 0)
+            {
+                return string.Format("R = {0,4}; C = {1,4}; Status = {2,4}; Value = {3,4};", Row + 1, Column + 1, Status, Value);
+            }
+            else
+            {
+                return string.Format("R = {0,4}; C = {1,4}; Status = {2,4};", Row + 1, Column + 1, Status);
+            }
         }
     }
 }
