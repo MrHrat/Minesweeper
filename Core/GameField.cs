@@ -209,5 +209,24 @@
 
             return screen;
         }
+
+        public Сell this[int row, int column]
+        {
+            get
+            {
+                if (VisibleСells.IsPresent(new Сell(row, column)))
+                {
+                    return VisibleСells[row, column];
+                }
+                else if (Marks.IsPresent(new Сell(row, column)))
+                {
+                    return Marks[row, column];
+                }
+                else
+                {
+                    return new CellAbsent(new Сell(row, column));
+                }
+            }
+        }
     }
 }
