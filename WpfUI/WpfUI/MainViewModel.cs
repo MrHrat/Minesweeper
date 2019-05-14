@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Algorithm;
+using Common;
 using Core;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -33,6 +35,36 @@ namespace WpfUI
             }
         }
 
+        private int countMine = 10;
+        public int CountMine
+        {
+            get { return countMine; }
+            set
+            {
+                countMine = value;
+                OnPropertyChanged("CountMine");
+            }
+        }
+
+        private Сell current;
+        public Сell Current
+        {
+            get { return current; }
+            set
+            {
+                current = value;
+                OnPropertyChanged("Current");
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return gameField.Status.ToString();
+            }
+        }
+
         const int gridSize = 10;
 
         private ObservableCollection<CellsGrid> cells = new ObservableCollection<CellsGrid>();
@@ -48,9 +80,15 @@ namespace WpfUI
                 
         public MainViewModel()
         {
-            gameField = new GameField(10, 10, 10);
+            NewGame();
+        }
+
+        public void NewGame()
+        {
+            gameField = new GameField(10, 10, CountMine);
             gameField.GenerateMines();
-            cells = new ObservableCollection<CellsGrid>();
+            cells.Clear();
+            OnPropertyChanged("Status");
             Fill();
         }
 
@@ -71,65 +109,33 @@ namespace WpfUI
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-    }
 
-    class CellsGrid
-    {
-        public Сell Tag { set; get; }
-        public object Content { set; get; }
-        public SolidColorBrush Background { set; get; }
-        static BrushConverter bc = new BrushConverter();
-
-        public CellsGrid(Сell tag)
+        public void Button_PreviewMouseDown(Button btn, MouseButton e)
         {
-            Tag = tag;
-            Content = setContent(tag);
-        }
+            var cell = (Сell)btn.Tag;
+            var mark = false;
+            Сell value;
 
-        private object setContent(Сell cell)
-        {
-            switch (cell.Status)
+            if (e == MouseButton.Right) mark = true;
+            if (e == MouseButton.Middle)
             {
-                case CellStatus.Explosion:
-                    Background = (SolidColorBrush)bc.ConvertFrom("#e50000");
-                    return GetObjImage(@"..\..\Explosion.png");
-                case CellStatus.Mark:
-                    return GetObjImage(@"..\..\Flag.png");
-                case CellStatus.MarkMine:
-                    Background = (SolidColorBrush)bc.ConvertFrom("#58e669");
-                    return GetObjImage(@"..\..\BombMark.png");
-                case CellStatus.Mine:
-                    return GetObjImage(@"..\..\Bomb.png");
-                case CellStatus.Number:
-                    Background = (SolidColorBrush)bc.ConvertFrom("#FFFACD");
-                    return cell.Value;
-                case CellStatus.Open:
-                    Background = (SolidColorBrush)bc.ConvertFrom("#FFFACD");
-                    return string.Empty;
-                default:
-                    Background = (SolidColorBrush)bc.ConvertFrom("#58e669");
-                    return string.Empty;
+                value = TestAlgorithm.GetСhoice(gameField.VisibleСells, gameField.Marks,
+                    gameField.Size, gameField.CountMines);
             }
-        }
-
-        object GetObjImage(string url)
-        {
-            StackPanel sp = new StackPanel();
-            sp.Orientation = Orientation.Horizontal;
-            Image flagImage = new Image();
-            BitmapImage bi = new BitmapImage();
-            bi.BeginInit();
-            bi.UriSource = new Uri(url, UriKind.Relative);
-            bi.EndInit();
-            flagImage.Source = bi;
-            sp.Children.Add(flagImage);
-
-            return sp;
-        }
-
-        public override string ToString()
-        {
-            return Content.ToString();
+            else
+            {
+                value = new Сell(cell.Row, cell.Column, mark);
+            }
+            gameField.OpenCell(value);
+            if (gameField.Status == GameStatus.Play)
+            {
+                Current = value;
+            }
+            else
+            {
+                OnPropertyChanged("Status");
+            }
+            Fill();
         }
     }
 }

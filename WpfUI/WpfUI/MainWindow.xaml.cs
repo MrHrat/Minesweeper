@@ -36,47 +36,17 @@ namespace WpfUI
 
         private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var btn = (Button)sender;
-            var cell = (Сell)btn.Tag;
-            var mark = false;
-            Сell value;
-
-            if (e.ChangedButton == MouseButton.Right) mark = true;
-            if (e.ChangedButton == MouseButton.Middle)
-            {
-                value = TestAlgorithm.GetСhoice(viewModel.gameField.VisibleСells, viewModel.gameField.Marks,
-                    viewModel.gameField.Size, viewModel.gameField.CountMines);
-            }
-            else
-            {                
-                value = new Сell(cell.Row, cell.Column, mark);
-            }
-            viewModel.gameField.OpenCell(value);
-            if (viewModel.gameField.Status == GameStatus.Play)
-            {
-                lblChose.Text = value.ToString();
-            }
-            lblStatus.Text = viewModel.gameField.Status.ToString();
-            viewModel.Fill();
+            viewModel.Button_PreviewMouseDown((Button)sender, e.ChangedButton);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            viewModel = new MainViewModel();
-            DataContext = viewModel;
+            viewModel.NewGame();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Сell value = TestAlgorithm.GetСhoice(viewModel.gameField.VisibleСells, viewModel.gameField.Marks,
-                    viewModel.gameField.Size, viewModel.gameField.CountMines);
-            viewModel.gameField.OpenCell(value);
-            if (viewModel.gameField.Status == GameStatus.Play)
-            {
-                lblChose.Text = value.ToString();
-            }
-            lblStatus.Text = viewModel.gameField.Status.ToString();
-            viewModel.Fill();
+            viewModel.Button_PreviewMouseDown((Button)sender, MouseButton.Middle);            
         }
     }
 }

@@ -11,22 +11,21 @@
         Title="MainWindow" Height="450" Width="450">
     <DockPanel LastChildFill="True">
         <DockPanel  DockPanel.Dock="Top" LastChildFill="True">
-            <Button DockPanel.Dock="Left" Background="Aquamarine" Content="New game" Width="70
-                    " Click="Button_Click" />
-            <Button DockPanel.Dock="Right" Background="DarkGreen" Content="10" Width="70" />
+            <Button DockPanel.Dock="Left" Background="Aquamarine" Content="New game" Width="70" Click="Button_Click" />
+            <TextBox DockPanel.Dock="Right" Background="Green" Width="70" Text="{Binding Path=CountMine, Mode=TwoWay}" HorizontalContentAlignment="Center"/>
             <Button Background="AliceBlue" Content="Algoritm" Click="Button_Click_1"/>
         </DockPanel>
         <StatusBar x:Name="stBar" Height="20" DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Name="lblStatus" />
+                <TextBlock Name="lblStatus" Text="{Binding Status}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem>
-                <TextBlock Name="lblChose" />
+                <TextBlock Name="lblChose" Text="{Binding Current}" />
             </StatusBarItem>
         </StatusBar>
 
-        <ItemsControl ItemsSource="{Binding Cells}">
+        <ItemsControl ItemsSource="{Binding Cells, Mode=TwoWay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Tag="{Binding Tag}" Content="{Binding Content}" Background="{Binding Background}" PreviewMouseDown="Button_PreviewMouseDown"/>
