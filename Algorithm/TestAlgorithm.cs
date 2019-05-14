@@ -36,14 +36,15 @@
             testAlgorithm.VisibleСell = listСell;
             testAlgorithm.MarkCell = markCells;
 
-            if ((listСell.Count == 0) || (testAlgorithm.GetMark() == null))
+            if (listСell.Count + markCells.Count < size.Row * size.Column)
             {
-                return Сell.Random(testAlgorithm.size);
+                if ((listСell.Count != 0) || (testAlgorithm.GetMark() != null))
+                {
+                    return testAlgorithm.GetMark();
+                }
             }
-            else
-            {
-                return testAlgorithm.GetMark();
-            }
+
+            return Сell.Random(testAlgorithm.size);
         }
 
         public Сell GetMark()
@@ -111,8 +112,8 @@
         {
             var listNoTags = ListСell.GetReverseCells(size, VisibleСell, MarkCell);
 
-            var minPercent = 10.0;
             var totalPercent = 1.0 * (countMine - MarkCell.Count) / ((size.Row * size.Column) - VisibleСell.Count);
+            var minPercent = totalPercent;
             var randomList = new ListСell();
 
             foreach (Сell field in listNoTags)
